@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Frontend - Consulta Psicológica
 
 ## Descripción
@@ -207,3 +208,7 @@ Este proyecto está bajo la licencia MIT.
 ---
 
 **Nota**: Este frontend está diseñado para trabajar con el backend Spring Boot correspondiente.
+=======
+# psicologia-frontend
+Web psicologia en angular
+>>>>>>> 9d34c06e19f5f400f1938924ab7ba549dd2b5e9b
