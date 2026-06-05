@@ -1,59 +1,58 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Appointment, AppointmentStatus } from '../models/appointment.model';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AppointmentService {
-  private apiUrl = 'http://localhost:8080/api/appointments';
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  constructor(private http: HttpClient) { }
-
-  // Endpoints públicos
-  getUpcomingAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/public/upcoming`);
+  private _headers(): HttpHeaders {
+    const token = this.auth.getToken();
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
   }
 
-  requestAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.post<Appointment>(`${this.apiUrl}/public/request`, appointment);
+  // Público
+  getAvailableSlots(days = 14, duracion = 60): Observable<any> {
+    return this.http.get<any>(`/api/appointments/available?days=${days}&duracion=${duracion}`);
   }
 
-  // Endpoints de administración
-  getAllAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/admin/all`);
+  // Paciente
+  getMyAppointments(): Observable<any> {
+    return this.http.get<any>('/api/appointments/my', { headers: this._headers() });
   }
 
-  getAppointmentById(id: number): Observable<Appointment> {
-    return this.http.get<Appointment>(`${this.apiUrl}/admin/${id}`);
+  bookAppointment(body: { fecha_iso: string; duracion_min?: number; tipo?: string; notas?: string }): Observable<any> {
+    return this.http.post<any>('/api/appointments/book', body, { headers: this._headers() });
   }
 
-  createAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.http.post<Appointment>(`${this.apiUrl}/admin`, appointment);
+  cancelMyAppointment(id: string): Observable<any> {
+    return this.http.delete<any>(`/api/appointments/my/${id}`, { headers: this._headers() });
   }
 
-  updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
-    return this.http.put<Appointment>(`${this.apiUrl}/admin/${id}`, appointment);
+  // Admin
+  getAllAppointments(): Observable<any> {
+    return this.http.get<any>('/api/appointments', { headers: this._headers() });
   }
 
-  deleteAppointment(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/admin/${id}`);
+  createAppointment(body: any): Observable<any> {
+    return this.http.post<any>('/api/appointments', body, { headers: this._headers() });
   }
 
-  getAppointmentsByClient(clientId: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/admin/client/${clientId}`);
+  updateAppointment(id: string, body: any): Observable<any> {
+    return this.http.put<any>(`/api/appointments/${id}`, body, { headers: this._headers() });
   }
 
-  getAppointmentsByStatus(status: AppointmentStatus): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/admin/status/${status}`);
+  deleteAppointment(id: string): Observable<any> {
+    return this.http.delete<any>(`/api/appointments/${id}`, { headers: this._headers() });
   }
 
-  getAppointmentsByDateRange(startDate: Date, endDate: Date): Observable<Appointment[]> {
-    const params = {
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString()
-    };
-    return this.http.get<Appointment[]>(`${this.apiUrl}/admin/date-range`, { params });
+  // Horario
+  getScheduleConfig(): Observable<any> {
+    return this.http.get<any>('/api/schedule/config');
   }
-} 
+
+  updateScheduleConfig(config: any): Observable<any> {
+    return this.http.put<any>('/api/schedule/config', config, { headers: this._headers() });
+  }
+}

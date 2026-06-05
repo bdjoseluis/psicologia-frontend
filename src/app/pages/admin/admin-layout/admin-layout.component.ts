@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -8,163 +8,116 @@ import { AuthService } from '../../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="container-fluid">
-      <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
-          <div class="position-sticky pt-3">
-            <div class="text-center mb-4">
-              <h5 class="text-white">Panel de Administración</h5>
-              <small class="text-muted">{{ authService.getCurrentUser()?.name }}</small>
-            </div>
-            
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/admin/dashboard" routerLinkActive="active">
-                  <i class="fas fa-tachometer-alt me-2"></i>
-                  Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/admin/clients" routerLinkActive="active">
-                  <i class="fas fa-users me-2"></i>
-                  Clientes
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/admin/appointments" routerLinkActive="active">
-                  <i class="fas fa-calendar me-2"></i>
-                  Citas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/admin/financial" routerLinkActive="active">
-                  <i class="fas fa-chart-line me-2"></i>
-                  Finanzas
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/admin/consultation" routerLinkActive="active">
-                  <i class="fas fa-cog me-2"></i>
-                  Configuración
-                </a>
-              </li>
-            </ul>
-            
-            <hr class="text-white">
-            
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link text-white" routerLink="/home">
-                  <i class="fas fa-home me-2"></i>
-                  Volver al Inicio
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="#" (click)="logout()">
-                  <i class="fas fa-sign-out-alt me-2"></i>
-                  Cerrar Sesión
-                </a>
-              </li>
-            </ul>
-          </div>
+    <div class="admin-wrap">
+      <!-- Sidebar -->
+      <aside class="sidebar" [class.open]="menuOpen">
+        <div class="sidebar-header">
+          <img src="/logo-devesan-2026.png" alt="Devesan" class="sidebar-logo" />
+          <span class="sidebar-title">Panel Admin</span>
+          <button class="sidebar-close" (click)="menuOpen=false">✕</button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+          <a routerLink="/admin/clients" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-users"></i> Pacientes
+          </a>
+          <a routerLink="/admin/appointments" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-calendar-alt"></i> Citas
+          </a>
+          <a routerLink="/admin/horario" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-clock"></i> Gestionar horario
+          </a>
+          <a routerLink="/admin/financial" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-chart-line"></i> Finanzas
+          </a>
+          <a routerLink="/admin/consultation" routerLinkActive="active" (click)="menuOpen=false">
+            <i class="fas fa-cog"></i> Configuración
+          </a>
         </nav>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">{{ pageTitle }}</h1>
-          </div>
-          
+        <div class="sidebar-footer">
+          <a routerLink="/home" class="sidebar-link-secondary">
+            <i class="fas fa-globe"></i> Ver web
+          </a>
+          <button class="btn-logout" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+          </button>
+        </div>
+      </aside>
+
+      <!-- Overlay móvil -->
+      <div class="overlay" *ngIf="menuOpen" (click)="menuOpen=false"></div>
+
+      <!-- Main -->
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <button class="hamburger" (click)="menuOpen=true">☰</button>
+          <span class="topbar-title">PsicoSalud Devesan — Administración</span>
+          <span class="topbar-user">{{ auth.getCurrentUser()?.nombre }}</span>
+        </header>
+
+        <div class="admin-content">
           <router-outlet></router-outlet>
-        </main>
+        </div>
       </div>
     </div>
   `,
   styles: [`
+    .admin-wrap { display: flex; min-height: 100vh; background: #f1f5f9; }
+
     .sidebar {
-      min-height: 100vh;
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+      width: 240px; min-width: 240px; background: #1e293b; color: #cbd5e1;
+      display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0; z-index: 200;
+      transition: transform .25s;
     }
-    
-    .sidebar .nav-link {
-      font-weight: 500;
-      color: #333;
+    .sidebar-header { display: flex; align-items: center; gap: .7rem; padding: 1.2rem 1rem; border-bottom: 1px solid #334155; }
+    .sidebar-logo { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; }
+    .sidebar-title { font-weight: 700; font-size: .95rem; color: #f1f5f9; flex: 1; }
+    .sidebar-close { display: none; background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; }
+    .sidebar-nav { flex: 1; padding: 1rem .5rem; display: flex; flex-direction: column; gap: .2rem; overflow-y: auto; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: .8rem; padding: .65rem 1rem;
+      color: #94a3b8; text-decoration: none; border-radius: 8px; font-size: .93rem; font-weight: 500;
+      transition: all .15s;
     }
-    
-    .sidebar .nav-link.active {
-      color: #007bff;
-    }
-    
-    .sidebar .nav-link:hover {
-      color: #007bff;
-    }
-    
-    .sidebar-heading {
-      font-size: .75rem;
-      text-transform: uppercase;
-    }
-    
-    .navbar-brand {
-      padding-top: .75rem;
-      padding-bottom: .75rem;
-      font-size: 1rem;
-      background-color: rgba(0, 0, 0, .25);
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-    }
-    
-    .navbar .navbar-toggler {
-      top: .25rem;
-      right: 1rem;
-    }
-    
-    .navbar .form-control {
-      padding: .75rem 1rem;
-      border-width: 0;
-      border-radius: 0;
-    }
-    
-    .form-control-dark {
-      color: #fff;
-      background-color: rgba(255, 255, 255, .1);
-      border-color: rgba(255, 255, 255, .1);
-    }
-    
-    .form-control-dark:focus {
-      border-color: transparent;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-    }
-    
-    .bi {
-      vertical-align: -.125em;
-      fill: currentColor;
-    }
-    
-    .nav-scroller {
-      position: relative;
-      z-index: 2;
-      height: 2.75rem;
-      overflow-y: hidden;
-    }
-    
-    .nav-scroller .nav {
-      display: flex;
-      flex-wrap: nowrap;
-      padding-bottom: 1rem;
-      margin-top: -1px;
-      overflow-x: auto;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
+    .sidebar-nav a:hover { background: #334155; color: #f1f5f9; }
+    .sidebar-nav a.active { background: linear-gradient(135deg, #bfa046, #d4b660); color: #fff; }
+    .sidebar-footer { padding: 1rem; border-top: 1px solid #334155; display: flex; flex-direction: column; gap: .5rem; }
+    .sidebar-link-secondary { display: flex; align-items: center; gap: .7rem; color: #64748b; text-decoration: none; font-size: .88rem; padding: .4rem .5rem; border-radius: 6px; }
+    .sidebar-link-secondary:hover { color: #94a3b8; }
+    .btn-logout { display: flex; align-items: center; gap: .7rem; background: none; border: 1px solid #334155; color: #64748b; padding: .5rem 1rem; border-radius: 8px; cursor: pointer; font-size: .88rem; transition: all .15s; }
+    .btn-logout:hover { background: #334155; color: #f87171; }
+
+    .admin-main { flex: 1; margin-left: 240px; display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: .8rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+    .hamburger { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #64748b; }
+    .topbar-title { font-weight: 700; color: #1e293b; font-size: 1rem; flex: 1; }
+    .topbar-user { font-size: .88rem; color: #64748b; font-weight: 600; }
+
+    .admin-content { flex: 1; padding: 1.5rem; }
+
+    .overlay { display: none; }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-close { display: block; }
+      .admin-main { margin-left: 0; }
+      .hamburger { display: block; }
+      .overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
     }
   `]
 })
 export class AdminLayoutComponent {
-  pageTitle = 'Dashboard';
+  menuOpen = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public auth: AuthService, private router: Router) {}
 
   logout(): void {
-    this.authService.logout();
+    this.auth.logout();
+    this.router.navigate(['/admin-login']);
   }
-} 
+}

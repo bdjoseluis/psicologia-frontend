@@ -1,275 +1,90 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FinancialService } from '../../../services/financial.service';
-import { FinancialRecord, RecordType, RecordTypeLabels } from '../../../models/financial.model';
 
 @Component({
   selector: 'app-financial',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   template: `
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Gestión Financiera</h5>
-        <a routerLink="/admin/financial/new" class="btn btn-primary">
-          <i class="fas fa-plus me-2"></i>
-          Nuevo Registro
-        </a>
-      </div>
-      <div class="card-body">
-        <!-- Filtros -->
-        <div class="row mb-3">
-          <div class="col-md-3">
-            <label class="form-label">Tipo</label>
-            <select class="form-select" [(ngModel)]="selectedType" (change)="filterRecords()">
-              <option value="">Todos los tipos</option>
-              <option *ngFor="let type of recordTypes" [value]="type">
-                {{ RecordTypeLabels[type] }}
-              </option>
-            </select>
+    <div class="fin-page">
+      <h2>Finanzas</h2>
+      <p class="sub">Registro de ingresos y pagos de la consulta.</p>
+
+      <div *ngIf="loading" class="loading-box"><div class="spinner"></div></div>
+
+      <div *ngIf="!loading">
+        <div class="stats-row">
+          <div class="stat-card">
+            <span>💶 {{ totalIngresos | number:'1.2-2' }} €</span>
+            <label>Total ingresos</label>
           </div>
-          <div class="col-md-3">
-            <label class="form-label">Categoría</label>
-            <select class="form-select" [(ngModel)]="selectedCategory" (change)="filterRecords()">
-              <option value="">Todas las categorías</option>
-              <option value="Sesión terapia">Sesión terapia</option>
-              <option value="Materiales">Materiales</option>
-              <option value="Alquiler">Alquiler</option>
-              <option value="Seguros">Seguros</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Formación">Formación</option>
-              <option value="Otros">Otros</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Buscar</label>
-            <input type="text" class="form-control" placeholder="Descripción..." [(ngModel)]="searchTerm" (input)="onSearch()">
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Fecha</label>
-            <input type="date" class="form-control" [(ngModel)]="selectedDate" (change)="filterRecords()">
+          <div class="stat-card">
+            <span>📋 {{ records.length }}</span>
+            <label>Registros</label>
           </div>
         </div>
 
-        <!-- Loading -->
-        <div *ngIf="loading" class="text-center my-4">
-          <div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div>
-        </div>
-
-        <!-- Tabla de registros -->
-        <table class="table table-hover" *ngIf="!loading && financialRecords.length">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Tipo</th>
-              <th>Descripción</th>
-              <th>Categoría</th>
-              <th>Cliente</th>
-              <th>Importe (€)</th>
-              <th>Método</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let record of financialRecords">
-              <td>{{ record.recordDate | date:'dd/MM/yyyy' }}</td>
-              <td>
-                <span class="badge" [ngClass]="getTypeBadgeClass(record.recordType)">
-                  {{ RecordTypeLabels[record.recordType] }}
-                </span>
-              </td>
-              <td>{{ record.description }}</td>
-              <td>{{ record.category || '-' }}</td>
-              <td>{{ record.clientName || '-' }}</td>
-              <td [class.text-success]="record.recordType === 'INCOME'" [class.text-danger]="record.recordType === 'EXPENSE'">
-                {{ record.amount | number:'1.2-2' }}
-              </td>
-              <td>{{ record.paymentMethod || '-' }}</td>
-              <td>
-                <button class="btn btn-sm btn-info me-1" (click)="viewRecord(record.id!)" *ngIf="record.id">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn btn-sm btn-warning me-1" (click)="editRecord(record.id!)" *ngIf="record.id">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-danger" (click)="deleteRecord(record.id!)" *ngIf="record.id">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Mensaje sin registros -->
-        <div *ngIf="!loading && !financialRecords.length" class="alert alert-info">
-          No hay registros financieros.
-        </div>
-
-        <!-- Estadísticas -->
-        <div class="row mt-4" *ngIf="!loading && financialRecords.length">
-          <div class="col-md-3">
-            <div class="card bg-success text-white">
-              <div class="card-body text-center">
-                <h6>Total Ingresos</h6>
-                <h4>{{ getTotalIncome() | number:'1.2-2' }}€</h4>
-              </div>
+        <div class="records-list">
+          <div *ngIf="records.length === 0" class="empty">No hay registros financieros.</div>
+          <div class="rec-row" *ngFor="let r of records">
+            <div class="rec-fecha">{{ fmtDate(r.fecha) }}</div>
+            <div class="rec-info">
+              <strong>{{ r.client_name }}</strong>
+              <span>{{ r.concepto }}</span>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card bg-danger text-white">
-              <div class="card-body text-center">
-                <h6>Total Gastos</h6>
-                <h4>{{ getTotalExpenses() | number:'1.2-2' }}€</h4>
-              </div>
+            <div class="rec-amount" [class.ingreso]="r.tipo==='ingreso'">
+              {{ r.tipo === 'ingreso' ? '+' : '-' }}{{ r.importe | number:'1.2-2' }} €
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card" [ngClass]="getBalanceClass()">
-              <div class="card-body text-center">
-                <h6>Balance</h6>
-                <h4>{{ getBalance() | number:'1.2-2' }}€</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card bg-primary text-white">
-              <div class="card-body text-center">
-                <h6>Total Registros</h6>
-                <h4>{{ financialRecords.length }}</h4>
-              </div>
-            </div>
+            <span class="badge" [class]="r.estado==='pagado'?'b-ok':'b-pend'">{{ r.estado }}</span>
           </div>
         </div>
       </div>
     </div>
-  `
+  `,
+  styles: [`
+    .fin-page { max-width: 900px; }
+    h2 { color: #1e293b; font-weight: 800; margin-bottom: .2rem; }
+    .sub { color: #64748b; margin-bottom: 2rem; }
+    .loading-box { display: flex; justify-content: center; padding: 2rem; }
+    .spinner { width: 32px; height: 32px; border: 2px solid #e2e8f0; border-top-color: #bfa046; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .stats-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 1rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .stat-card span { display: block; font-size: 1.4rem; font-weight: 800; color: #1e293b; }
+    .stat-card label { font-size: .78rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+    .records-list { display: flex; flex-direction: column; gap: .6rem; }
+    .empty { text-align: center; color: #94a3b8; padding: 2rem; }
+    .rec-row { background: #fff; border-radius: 10px; padding: .8rem 1.2rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 6px rgba(0,0,0,.04); }
+    .rec-fecha { font-size: .8rem; color: #64748b; min-width: 80px; }
+    .rec-info { flex: 1; }
+    .rec-info strong { display: block; color: #1e293b; font-size: .9rem; }
+    .rec-info span { font-size: .82rem; color: #64748b; }
+    .rec-amount { font-weight: 800; font-size: 1rem; }
+    .rec-amount.ingreso { color: #059669; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+    .b-ok { background: #d1fae5; color: #065f46; }
+    .b-pend { background: #fef3c7; color: #92400e; }
+  `]
 })
 export class FinancialComponent implements OnInit {
-  financialRecords: FinancialRecord[] = [];
-  filteredRecords: FinancialRecord[] = [];
-  loading = false;
-  searchTerm = '';
-  selectedType = '';
-  selectedCategory = '';
-  selectedDate = '';
-  
-  recordTypes = Object.values(RecordType);
-  RecordTypeLabels = RecordTypeLabels;
+  records: any[] = [];
+  loading = true;
+  totalIngresos = 0;
 
-  constructor(private financialService: FinancialService, private router: Router) {}
+  constructor(private svc: FinancialService) {}
 
   ngOnInit() {
-    this.loadFinancialRecords();
-  }
-
-  loadFinancialRecords() {
-    this.loading = true;
-    this.financialService.getAllFinancialRecords().subscribe({
-      next: (data) => {
-        this.financialRecords = data;
-        this.filteredRecords = data;
+    this.svc.getAll().subscribe({
+      next: (r: any) => {
+        this.records = r.records || r || [];
+        this.totalIngresos = this.records.filter((r: any) => r.tipo === 'ingreso').reduce((s: number, r: any) => s + (+r.importe || 0), 0);
         this.loading = false;
       },
-      error: (error) => {
-        console.error('Error cargando registros financieros:', error);
-        this.financialRecords = [];
-        this.filteredRecords = [];
-        this.loading = false;
-      }
+      error: () => { this.records = []; this.loading = false; }
     });
   }
 
-  onSearch() {
-    this.filterRecords();
-  }
-
-  filterRecords() {
-    this.filteredRecords = this.financialRecords.filter(record => {
-      // Filtro por tipo
-      if (this.selectedType && record.recordType !== this.selectedType) {
-        return false;
-      }
-      
-      // Filtro por categoría
-      if (this.selectedCategory && record.category !== this.selectedCategory) {
-        return false;
-      }
-      
-      // Filtro por fecha
-      if (this.selectedDate) {
-        const recordDate = new Date(record.recordDate);
-        const selectedDate = new Date(this.selectedDate);
-        if (recordDate.toDateString() !== selectedDate.toDateString()) {
-          return false;
-        }
-      }
-      
-      // Filtro por búsqueda de texto
-      if (this.searchTerm) {
-        const searchLower = this.searchTerm.toLowerCase();
-        const description = record.description?.toLowerCase() || '';
-        const category = record.category?.toLowerCase() || '';
-        const clientName = record.clientName?.toLowerCase() || '';
-        const notes = record.notes?.toLowerCase() || '';
-        
-        if (!description.includes(searchLower) && 
-            !category.includes(searchLower) && 
-            !clientName.includes(searchLower) && 
-            !notes.includes(searchLower)) {
-          return false;
-        }
-      }
-      
-      return true;
-    });
-  }
-
-  getTypeBadgeClass(type: RecordType): string {
-    return type === RecordType.INCOME ? 'bg-success' : 'bg-danger';
-  }
-
-  getTotalIncome(): number {
-    return this.filteredRecords
-      .filter(record => record.recordType === RecordType.INCOME)
-      .reduce((sum, record) => sum + record.amount, 0);
-  }
-
-  getTotalExpenses(): number {
-    return this.filteredRecords
-      .filter(record => record.recordType === RecordType.EXPENSE)
-      .reduce((sum, record) => sum + record.amount, 0);
-  }
-
-  getBalance(): number {
-    return this.getTotalIncome() - this.getTotalExpenses();
-  }
-
-  getBalanceClass(): string {
-    const balance = this.getBalance();
-    return balance >= 0 ? 'bg-success text-white' : 'bg-danger text-white';
-  }
-
-  viewRecord(id: number) {
-    this.router.navigate(['/admin/financial', id]);
-  }
-
-  editRecord(id: number) {
-    this.router.navigate(['/admin/financial/edit', id]);
-  }
-
-  deleteRecord(id: number) {
-    if (confirm('¿Seguro que deseas eliminar este registro financiero?')) {
-      this.financialService.deleteFinancialRecord(id).subscribe({
-        next: () => {
-          this.loadFinancialRecords();
-        },
-        error: (error) => {
-          console.error('Error eliminando registro financiero:', error);
-          alert('Error al eliminar el registro financiero');
-        }
-      });
-    }
-  }
-} 
+  fmtDate(d: string) { return new Date(d).toLocaleDateString('es-ES'); }
+}

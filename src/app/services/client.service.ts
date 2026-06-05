@@ -1,37 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Client } from '../models/client.model';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ClientService {
-  private apiUrl = 'http://localhost:8080/api/clients';
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  constructor(private http: HttpClient) { }
-
-  getAllClients(): Observable<Client[]> {
-    return this.http.get<Client[]>(`${this.apiUrl}/admin/all`);
+  private _headers(): HttpHeaders {
+    const token = this.auth.getToken();
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
   }
 
-  getClientById(id: number): Observable<Client> {
-    return this.http.get<Client>(`${this.apiUrl}/admin/${id}`);
+  getAllClients(): Observable<any> {
+    return this.http.get<any>('/api/clients', { headers: this._headers() });
   }
 
-  createClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(`${this.apiUrl}/admin`, client);
+  getClient(id: string): Observable<any> {
+    return this.http.get<any>(`/api/clients/${id}`, { headers: this._headers() });
   }
 
-  updateClient(id: number, client: Client): Observable<Client> {
-    return this.http.put<Client>(`${this.apiUrl}/admin/${id}`, client);
+  createClient(body: any): Observable<any> {
+    return this.http.post<any>('/api/clients', body, { headers: this._headers() });
   }
 
-  deleteClient(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/admin/${id}`);
+  updateClient(id: string, body: any): Observable<any> {
+    return this.http.put<any>(`/api/clients/${id}`, body, { headers: this._headers() });
   }
 
-  searchClients(query: string): Observable<Client[]> {
-    return this.http.get<Client[]>(`${this.apiUrl}/admin/search?q=${query}`);
+  deleteClient(id: string): Observable<any> {
+    return this.http.delete<any>(`/api/clients/${id}`, { headers: this._headers() });
   }
-} 
+}

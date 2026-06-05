@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ConsultationInfo } from '../models/consultation.model';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ConsultationService {
-  private apiUrl = 'http://localhost:8080/api/consultation';
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  constructor(private http: HttpClient) { }
-
-  getConsultationInfo(): Observable<ConsultationInfo> {
-    return this.http.get<ConsultationInfo>(`${this.apiUrl}/public/info`);
+  private _headers(): HttpHeaders {
+    const token = this.auth.getToken();
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
   }
 
-  getConsultationInfoAdmin(): Observable<ConsultationInfo> {
-    return this.http.get<ConsultationInfo>(`${this.apiUrl}/admin/info`);
+  getInfo(): Observable<any> {
+    return this.http.get<any>('/api/info');
   }
 
-  updateConsultationInfo(info: ConsultationInfo): Observable<ConsultationInfo> {
-    return this.http.post<ConsultationInfo>(`${this.apiUrl}/admin/info`, info);
+  updateInfo(key: string, value: string): Observable<any> {
+    return this.http.put<any>(`/api/info/${key}`, { value }, { headers: this._headers() });
   }
-} 
+}
