@@ -52,8 +52,35 @@
   <router-outlet></router-outlet>
 </main>
 
-<footer class="text-center mt-5 mb-3">
-  <a routerLink="/admin-login" style="font-size: 0.85em; color: #bbb; text-decoration: underline;">Acceso administración</a>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">DEVESAN</span>
+      <p>Psicología · Sexología · Terapia de Pareja</p>
+      <p>Crevillent, Alicante · Online</p>
+      <p style="margin-top:.8rem; font-size:.8rem;">Primera consulta gratuita, sin compromiso.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <a [routerLink]="['/home']" (click)="scrollTo('inicio')">Inicio</a>
+      <a [routerLink]="['/home']" (click)="scrollTo('servicios')">Servicios</a>
+      <a [routerLink]="['/home']" (click)="scrollTo('sobre')">Sobre mí</a>
+      <a [routerLink]="['/home']" (click)="scrollTo('contacto')">Contacto</a>
+      <a [routerLink]="['/home']" (click)="scrollTo('horarios')">Horarios</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Reserva tu cita</h4>
+      <p>Atención profesional y confidencial.<br>Modalidad presencial u online.</p>
+      <a routerLink="/registro" class="footer-cta">Reservar cita →</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 Dolores Devesa Santacruz. Todos los derechos reservados.</span>
+    <a routerLink="/admin-login" class="footer-admin">Admin</a>
+  </div>
 </footer>
 
 <style>
@@ -111,10 +138,57 @@
 
   #main-app-content { min-height: 80vh; width: 100%; }
 
+  /* ── FOOTER ── */
+  .site-footer {
+    background: #faf9fe; border-top: 1px solid #e8e6f4;
+    padding: 4rem 0 0;
+    font-family: -apple-system, 'SF Pro Display', 'Space Grotesk', 'Inter', sans-serif;
+  }
+  .footer-inner {
+    max-width: 1080px; margin: 0 auto; padding: 0 1.5rem 3rem;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 3rem;
+  }
+  .footer-logo {
+    font-size: 1.35rem; font-weight: 900; color: #7c6fcd;
+    letter-spacing: 2px; display: block; margin-bottom: .6rem;
+  }
+  .footer-brand p { color: #6e6e82; font-size: .87rem; line-height: 1.7; margin: 0; }
+  .footer-col h4 {
+    font-size: .68rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: #7c6fcd; margin: 0 0 1rem;
+  }
+  .footer-col a {
+    display: block; color: #3a3a4a; text-decoration: none;
+    font-size: .9rem; margin-bottom: .45rem; cursor: pointer;
+    transition: color .15s;
+  }
+  .footer-col a:hover { color: #7c6fcd; }
+  .footer-col p { color: #6e6e82; font-size: .87rem; line-height: 1.65; margin: 0 0 1rem; }
+  .footer-cta {
+    display: inline-flex; padding: 10px 22px;
+    background: #7c6fcd; color: #fff !important;
+    border-radius: 980px; font-weight: 600; font-size: .87rem;
+    box-shadow: 0 4px 16px rgba(124,111,205,.28);
+    transition: background .2s, transform .2s;
+    text-decoration: none !important;
+  }
+  .footer-cta:hover { background: #5a4fb5; transform: translateY(-1px); }
+  .footer-bottom {
+    max-width: 1080px; margin: 0 auto;
+    padding: 1.4rem 1.5rem;
+    border-top: 1px solid #e8e6f4;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom span { color: #9090a0; font-size: .8rem; }
+  .footer-admin { color: #d4d4d8; font-size: .72rem; text-decoration: none; }
+  .footer-admin:hover { color: #a1a1aa; }
+
   @media (max-width: 900px) {
     .navbar-links { display: none; }
     .navbar-auth { display: none; }
     .nav-hamburger { display: flex; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; }
   }
 </style>
 
