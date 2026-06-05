@@ -48,11 +48,29 @@ import { AuthService } from '../../services/auth.service';
         </div>
       </div>
 
+      <!-- Floating trust card (desktop) -->
+      <div class="hero-float fd d5">
+        <div class="hf-quote">"Encontré el espacio que necesitaba para avanzar."</div>
+        <div class="hf-who">
+          <div class="hf-av">A</div>
+          <div><strong>Ana M.</strong><small>Terapia individual</small></div>
+        </div>
+        <div class="hf-stars"><i class="fas fa-star" *ngFor="let _ of [0,0,0,0,0]"></i></div>
+      </div>
+
       <div class="scroll-hint fd d5">
         <div class="sh-mouse"><div class="sh-wheel"></div></div>
         <span>scroll</span>
       </div>
     </section>
+
+    <!-- MARQUEE STRIP -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <span *ngFor="let w of marqueeWords">{{ w }}</span>
+        <span *ngFor="let w of marqueeWords">{{ w }}</span>
+      </div>
+    </div>
 
     <!-- SERVICIOS -->
     <section id="servicios" class="sec">
@@ -321,6 +339,49 @@ import { AuthService } from '../../services/auth.service';
     }
     .btn-white-o:hover { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.1); }
 
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden; white-space: nowrap;
+      background: var(--lav-pale); border-top: 1px solid var(--lav-soft); border-bottom: 1px solid var(--lav-soft);
+      padding: .85rem 0;
+    }
+    .marquee-track {
+      display: inline-flex; gap: 2rem;
+      animation: marquee 28s linear infinite;
+      font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+      color: var(--lav-lo); text-transform: uppercase;
+    }
+    .marquee-track span { padding: 0 .5rem; }
+    @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+    /* Floating trust card */
+    .hero-float {
+      position: absolute; right: max(4vw, 2rem); top: 50%;
+      transform: translateY(-50%);
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.4rem 1.6rem;
+      width: 240px;
+      box-shadow: 0 16px 48px rgba(124,111,205,.14), 0 2px 8px rgba(0,0,0,.06);
+      display: flex; flex-direction: column; gap: .7rem;
+      z-index: 2;
+    }
+    .hf-quote {
+      font-size: .88rem; color: var(--text-2); line-height: 1.6;
+      font-style: italic;
+    }
+    .hf-who {
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .hf-av {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      background: var(--lav-pale); border: 1.5px solid var(--lav-soft);
+      color: var(--lav-lo); font-weight: 800; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hf-who strong { display: block; font-size: .83rem; color: var(--text); font-weight: 700; }
+    .hf-who small  { font-size: .73rem; color: var(--muted); }
+    .hf-stars      { color: #f59e0b; font-size: .72rem; display: flex; gap: .1rem; }
+
     /* ── HERO ── */
     .hero {
       min-height: 100svh; background: var(--bg);
@@ -585,6 +646,10 @@ import { AuthService } from '../../services/auth.service';
     .hc p    { color: var(--muted); font-size: .84rem; }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .hero-float { display: none; }
+    }
+
     @media (max-width: 900px) {
       .hero-inner  { align-items: center; text-align: center; }
       .hero-tag    { text-align: center; }
@@ -618,6 +683,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   pct       = 0;
 
   tags = ['Cognitivo-conductual', 'Terapia sistémica', 'Sexología clínica', 'Mindfulness'];
+
+  marqueeWords = [
+    'Ansiedad ·', 'Autoestima ·', 'Terapia de pareja ·', 'Sexología ·',
+    'Duelo ·', 'Mindfulness ·', 'Orientación laboral ·', 'Bienestar ·',
+    'Terapia individual ·', 'Crevillent · Alicante ·', 'Online ·',
+  ];
 
   services = [
     { icon: 'fas fa-brain',      title: 'Terapia individual',  price: '60 €/sesión', desc: 'Ansiedad, depresión, autoestima, duelo y gestión emocional.' },

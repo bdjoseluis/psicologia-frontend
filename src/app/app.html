@@ -57,17 +57,18 @@
 </footer>
 
 <style>
-  html, body { overflow-x: hidden !important; max-width: 100vw !important; margin: 0; padding: 0; background: #f8fafc; }
+  html, body { overflow-x: hidden !important; max-width: 100vw !important; margin: 0; padding: 0; background: #ffffff; }
   * { box-sizing: border-box; }
 
   .main-navbar {
-    width: 100vw; background: #fffbe7;
-    border-bottom: 1px solid #e5e7eb;
+    width: 100vw; background: rgba(255,255,255,.88);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid #e8e6f4;
     padding: .65rem 0;
     position: sticky; top: 0; z-index: 100;
     transition: box-shadow .2s;
   }
-  .main-navbar.scrolled { box-shadow: 0 4px 20px rgba(191,160,70,.12); }
+  .main-navbar.scrolled { box-shadow: 0 4px 24px rgba(124,111,205,.1); }
 
   .navbar-content {
     max-width: 1200px; margin: 0 auto;
@@ -75,38 +76,38 @@
     padding: 0 1.5rem; gap: 1rem;
   }
   .navbar-brand {
-    font-size: 1.45rem; font-weight: 900; color: #bfa046;
+    font-size: 1.45rem; font-weight: 900; color: #7c6fcd;
     letter-spacing: 2px; text-decoration: none; flex-shrink: 0;
   }
   .navbar-links {
     list-style: none; display: flex; gap: 2rem; margin: 0; padding: 0; flex: 1; justify-content: center;
   }
   .navbar-links li a {
-    text-decoration: none; color: #232946; font-weight: 600; font-size: 1rem;
+    text-decoration: none; color: #3a3a4a; font-weight: 600; font-size: 1rem;
     cursor: pointer; border-bottom: 2px solid transparent; padding-bottom: 2px;
     transition: color .15s, border-color .15s;
   }
-  .navbar-links li a:hover { color: #bfa046; border-bottom-color: #bfa046; }
+  .navbar-links li a:hover { color: #7c6fcd; border-bottom-color: #7c6fcd; }
 
   .navbar-auth { display: flex; gap: .6rem; align-items: center; flex-shrink: 0; }
-  .nav-btn { padding: 7px 16px; border-radius: 8px; font-weight: 700; font-size: .88rem; text-decoration: none; transition: all .15s; }
-  .nav-btn-ghost { border: 1.5px solid #bfa046; color: #bfa046; background: transparent; }
-  .nav-btn-ghost:hover { background: #fffbe7; }
-  .nav-btn-gold { background: linear-gradient(135deg, #bfa046, #d4b660); color: #fff; border: none; }
-  .nav-btn-gold:hover { opacity: .9; }
+  .nav-btn { padding: 7px 18px; border-radius: 980px; font-weight: 700; font-size: .88rem; text-decoration: none; transition: all .18s; }
+  .nav-btn-ghost { border: 1.5px solid #c8c3ee; color: #7c6fcd; background: transparent; }
+  .nav-btn-ghost:hover { background: #f3f1fb; }
+  .nav-btn-gold { background: linear-gradient(135deg, #5a4fb5, #7c6fcd); color: #fff; border: none; box-shadow: 0 3px 14px rgba(124,111,205,.32); }
+  .nav-btn-gold:hover { opacity: .9; transform: translateY(-1px); }
 
   .nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px; }
-  .nav-hamburger span { display: block; width: 22px; height: 2px; background: #232946; border-radius: 2px; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: #3a3a4a; border-radius: 2px; }
 
   .mobile-menu {
-    display: none; flex-direction: column; background: #fffbe7;
-    border-top: 1px solid #e5e7eb; padding: .5rem 1.5rem 1rem;
+    display: none; flex-direction: column; background: #ffffff;
+    border-top: 1px solid #e8e6f4; padding: .5rem 1.5rem 1rem;
     gap: .2rem;
   }
   .mobile-menu.open { display: flex; }
-  .mobile-menu a { padding: .6rem 0; color: #232946; text-decoration: none; font-weight: 600; font-size: 1rem; border-bottom: 1px solid #f0e8c0; cursor: pointer; }
-  .mobile-menu hr { border: none; border-top: 1px solid #e5e7eb; margin: .4rem 0; }
-  .nav-btn-gold-mobile { color: #bfa046 !important; }
+  .mobile-menu a { padding: .6rem 0; color: #3a3a4a; text-decoration: none; font-weight: 600; font-size: 1rem; border-bottom: 1px solid #e8e6f4; cursor: pointer; }
+  .mobile-menu hr { border: none; border-top: 1px solid #e8e6f4; margin: .4rem 0; }
+  .nav-btn-gold-mobile { color: #7c6fcd !important; }
 
   #main-app-content { min-height: 80vh; width: 100%; }
 
