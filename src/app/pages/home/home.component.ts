@@ -10,152 +10,107 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule, ChatWidgetComponent],
   template: `
-    <div class="progress-bar" [style.transform]="'scaleX('+pct/100+')'"></div>
+    <div class="pbar" [style.transform]="'scaleX('+pct/100+')'"></div>
 
-    <!-- ══ HERO ══ -->
+    <!-- HERO -->
     <section class="hero" id="inicio">
-      <div class="hero-blob hero-blob-1"></div>
-      <div class="hero-blob hero-blob-2"></div>
+      <div class="hero-glow g1"></div>
+      <div class="hero-glow g2"></div>
 
-      <div class="hero-content">
-        <!-- LEFT -->
-        <div class="hero-left">
-          <div class="hero-eyebrow fd d1">
-            <span class="chip">Crevillent · Online</span>
-            <span class="dot-sep"></span>
-            <span class="eyebrow-text">Primera consulta gratuita</span>
-          </div>
+      <div class="hero-inner">
+        <p class="hero-tag fd d1">Psicología · Sexología · Terapia de Pareja</p>
 
-          <h1 class="hero-h fd d2">
-            Un espacio<br>
-            para tu<br>
-            <span class="hero-em">bienestar</span>
-          </h1>
+        <h1 class="hero-h fd d2">
+          Cuidar tu mente<br>es el mejor<br>
+          <span class="accent">regalo.</span>
+        </h1>
 
-          <p class="hero-sub fd d3">
-            Psicología, sexología y terapia de pareja.<br>
-            Atención profesional y confidencial, a tu ritmo.
-          </p>
+        <p class="hero-p fd d3">
+          Atención profesional y confidencial en Crevillent (Alicante) y online.<br>
+          Primera consulta gratuita, sin compromiso.
+        </p>
 
-          <div class="hero-btns fd d4">
-            <a [routerLink]="ctaLink" [queryParams]="ctaParams" class="btn-primary">{{ ctaLabel }}</a>
-            <a (click)="scrollTo('servicios')" class="btn-secondary">Conoce los servicios ↓</a>
-          </div>
-
-          <div class="hero-trust fd d5">
-            <div class="trust-item" *ngFor="let t of trust">
-              <i [class]="t.icon"></i>
-              <span>{{ t.label }}</span>
-            </div>
-          </div>
+        <div class="hero-ctas fd d4">
+          <a [routerLink]="ctaLink" [queryParams]="ctaParams" class="btn-primary">{{ ctaLabel }}</a>
+          <a (click)="scrollTo('servicios')" class="btn-ghost">Ver servicios</a>
         </div>
 
-        <!-- RIGHT — photo tasteful -->
-        <div class="hero-right fd d2">
-          <div class="photo-wrap">
+        <!-- Avatar circular -->
+        <div class="hero-profile fd d5">
+          <div class="avatar-ring">
             <img src="/image.png" alt="Dolores Devesa Santacruz" />
-            <div class="photo-card photo-card-top">
-              <i class="fas fa-shield-alt"></i>
-              <div>
-                <strong>Confidencial</strong>
-                <span>Espacio seguro</span>
-              </div>
-            </div>
-            <div class="photo-card photo-card-bot">
-              <i class="fas fa-gift"></i>
-              <div>
-                <strong>1ª consulta</strong>
-                <span>sin coste</span>
-              </div>
-            </div>
           </div>
+          <div class="profile-text">
+            <strong>Dolores Devesa Santacruz</strong>
+            <span>Psicóloga colegiada · Crevillent</span>
+          </div>
+          <div class="profile-pill"><i class="fas fa-gift"></i> 1ª consulta gratis</div>
         </div>
       </div>
 
-      <div class="hero-scroll fd d5">
-        <div class="scroll-track"><div class="scroll-dot"></div></div>
+      <div class="scroll-hint fd d5">
+        <div class="sh-mouse"><div class="sh-wheel"></div></div>
         <span>scroll</span>
       </div>
     </section>
 
-    <!-- ══ MARQUEE ══ -->
-    <div class="marquee-strip">
-      <div class="marquee-inner">
-        <ng-container *ngFor="let _ of [0,1]">
-          <span *ngFor="let m of mqItems">{{ m }} <em>·</em></span>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- ══ SERVICIOS ══ -->
-    <section id="servicios" class="section section-light">
-      <div class="wrap">
-        <header class="sec-head rv">
-          <span class="label">Servicios</span>
+    <!-- SERVICIOS -->
+    <section id="servicios" class="sec">
+      <div class="w">
+        <div class="sec-head rv">
+          <p class="overline">Servicios</p>
           <h2>¿En qué puedo<br>ayudarte?</h2>
-          <p>Cada persona merece una atención adaptada a su historia.</p>
-        </header>
+          <p class="sub">Cada persona es única. Trabajo de forma personalizada según tus necesidades.</p>
+        </div>
 
         <div class="svc-grid">
-          <div class="svc-card rv" *ngFor="let s of services; let i = index" [style.--i]="i">
-            <div class="svc-icon">
-              <i [class]="s.icon"></i>
-            </div>
+          <div class="svc rv" *ngFor="let s of services; let i = index" [style.--i]="i">
+            <div class="svc-ico"><i [class]="s.icon"></i></div>
             <h3>{{ s.title }}</h3>
             <p>{{ s.desc }}</p>
-            <div class="svc-bottom">
-              <span class="svc-price">{{ s.price }}</span>
-              <a [routerLink]="ctaLink" class="svc-cta">Reservar →</a>
+            <div class="svc-foot">
+              <span class="price">{{ s.price }}</span>
+              <a [routerLink]="ctaLink" class="svc-link">Reservar →</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ SOBRE MÍ ══ -->
-    <section id="sobre" class="section section-sage">
-      <div class="wrap about-wrap">
-        <div class="about-photo-col rv-left">
-          <div class="about-photo-frame">
+    <!-- SOBRE MÍ -->
+    <section id="sobre" class="sec sec-tinted">
+      <div class="w about-w">
+        <div class="about-img rv-l">
+          <div class="about-avatar">
             <img src="/image.png" alt="Dolores Devesa Santacruz" />
           </div>
-          <div class="about-decor"></div>
         </div>
 
-        <div class="about-text-col rv-right">
-          <span class="label">Sobre mí</span>
-          <h2 class="about-name">Dolores<br>Devesa Santacruz</h2>
+        <div class="about-txt rv-r">
+          <p class="overline">Sobre mí</p>
+          <h2>Dolores Devesa<br>Santacruz</h2>
           <p class="about-role">Psicóloga · Sexóloga · Terapeuta de Pareja</p>
-          <p class="about-bio">
-            Con amplia experiencia en acompañamiento emocional, trabajo desde un enfoque
-            integrador, humano y basado en la evidencia. Creo en la capacidad de cada
-            persona para transformar su vida cuando encuentra el apoyo adecuado.
-          </p>
-          <p class="about-bio">
-            Mi consulta es un espacio de escucha activa, sin juicios, donde puedes
-            explorar tus emociones y encontrar tu propio camino al bienestar.
-          </p>
-          <div class="about-tags">
-            <span *ngFor="let t of aboutTags">{{ t }}</span>
+          <p class="body-txt">Con amplia experiencia en acompañamiento emocional y desarrollo personal, trabajo desde un enfoque integrador, humano y basado en la evidencia científica.</p>
+          <p class="body-txt">Mi objetivo es crear un espacio seguro donde puedas explorar tus emociones y avanzar hacia el bienestar que mereces.</p>
+          <div class="tags">
+            <span *ngFor="let t of tags">{{ t }}</span>
           </div>
-          <a routerLink="/registro" class="btn-primary" style="margin-top:1.5rem">
-            Pedir cita con Dolores
-          </a>
+          <a routerLink="/registro" class="btn-primary" style="margin-top:1.8rem">Pedir cita</a>
         </div>
       </div>
     </section>
 
-    <!-- ══ PROCESO ══ -->
-    <section class="section section-light">
-      <div class="wrap">
-        <header class="sec-head rv">
-          <span class="label">Cómo funciona</span>
-          <h2>Tu camino<br>empieza aquí</h2>
-        </header>
-        <div class="steps-grid">
+    <!-- PROCESO -->
+    <section class="sec">
+      <div class="w">
+        <div class="sec-head rv">
+          <p class="overline">Cómo funciona</p>
+          <h2>Tu camino<br>al bienestar</h2>
+        </div>
+        <div class="steps">
           <div class="step rv" *ngFor="let s of steps; let i = index" [style.--i]="i">
-            <div class="step-num">{{ i + 1 }}</div>
-            <div class="step-icon"><i [class]="s.icon"></i></div>
+            <div class="step-n">{{ i+1 }}</div>
+            <div class="step-ico"><i [class]="s.icon"></i></div>
             <h4>{{ s.title }}</h4>
             <p>{{ s.desc }}</p>
           </div>
@@ -163,101 +118,91 @@ import { AuthService } from '../../services/auth.service';
       </div>
     </section>
 
-    <!-- ══ TESTIMONIOS ══ -->
-    <section class="section section-cream">
-      <div class="wrap">
-        <header class="sec-head rv">
-          <span class="label">Opiniones</span>
+    <!-- TESTIMONIOS -->
+    <section class="sec sec-tinted">
+      <div class="w">
+        <div class="sec-head rv">
+          <p class="overline">Opiniones</p>
           <h2>Lo que dicen<br>mis pacientes</h2>
-        </header>
+        </div>
         <div class="testi-grid">
-          <div class="testi-card rv" *ngFor="let t of testimonials; let i = index" [style.--i]="i">
-            <div class="testi-mark">"</div>
+          <div class="tcard rv" *ngFor="let t of testimonials; let i = index" [style.--i]="i">
+            <div class="tcard-q">"</div>
             <p>{{ t.text }}</p>
-            <div class="testi-stars"><i class="fas fa-star" *ngFor="let _ of [0,0,0,0,0]"></i></div>
-            <div class="testi-author">
-              <div class="testi-avatar">{{ t.name[0] }}</div>
-              <div>
-                <strong>{{ t.name }}</strong>
-                <small>{{ t.service }}</small>
-              </div>
+            <div class="stars"><i class="fas fa-star" *ngFor="let _ of [0,0,0,0,0]"></i></div>
+            <div class="tcard-who">
+              <div class="tcard-av">{{ t.name[0] }}</div>
+              <div><strong>{{ t.name }}</strong><small>{{ t.service }}</small></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ CTA ══ -->
-    <section class="section-cta">
-      <div class="cta-blob cta-blob-1"></div>
-      <div class="cta-blob cta-blob-2"></div>
-      <div class="wrap cta-wrap">
-        <div class="cta-left rv">
-          <span class="label-light">Sin compromiso</span>
-          <h2>¿Damos<br>el primer paso?</h2>
-          <p>Reserva tu primera consulta gratuita hoy.</p>
+    <!-- CTA BANNER -->
+    <section class="cta-sec">
+      <div class="w cta-w rv">
+        <div>
+          <p class="overline-light">Sin compromiso</p>
+          <h2>¿Hablamos?</h2>
+          <p>La primera sesión es gratuita. Dé el primer paso hoy.</p>
         </div>
-        <div class="cta-right rv">
+        <div class="cta-btns">
           <a routerLink="/registro" class="btn-white">Crear cuenta y reservar</a>
-          <a routerLink="/login" class="btn-white-ghost">Ya tengo cuenta →</a>
+          <a routerLink="/login"    class="btn-white-o">Ya tengo cuenta →</a>
         </div>
       </div>
     </section>
 
-    <!-- ══ CONTACTO ══ -->
-    <section id="contacto" class="section section-light">
-      <div class="wrap">
-        <header class="sec-head rv">
-          <span class="label">Contacto</span>
-          <h2>Hablemos</h2>
-          <p>No estás sola/solo. El primer paso es el más difícil, y puedes darlo hoy.</p>
-        </header>
-        <div class="contact-grid">
-          <a [href]="info.phone ? 'tel:'+info.phone : '#'" class="cc rv" [style.--i]="0">
-            <div class="cc-icon"><i class="fas fa-phone-alt"></i></div>
-            <strong>Teléfono</strong>
-            <span>{{ info.phone || '+34 XXX XXX XXX' }}</span>
+    <!-- CONTACTO -->
+    <section id="contacto" class="sec">
+      <div class="w">
+        <div class="sec-head rv">
+          <p class="overline">Contacto</p>
+          <h2>Estoy aquí<br>para ti</h2>
+        </div>
+        <div class="cc-grid">
+          <a [href]="info.phone?'tel:'+info.phone:'#'" class="cc rv" [style.--i]="0">
+            <div class="cc-ic"><i class="fas fa-phone-alt"></i></div>
+            <strong>Teléfono</strong><span>{{ info.phone||'+34 XXX XXX XXX' }}</span>
           </a>
-          <a [href]="info.email ? 'mailto:'+info.email : '#'" class="cc rv" [style.--i]="1">
-            <div class="cc-icon"><i class="fas fa-envelope"></i></div>
-            <strong>Email</strong>
-            <span>{{ info.email || 'consulta@devesan.com' }}</span>
+          <a [href]="info.email?'mailto:'+info.email:'#'" class="cc rv" [style.--i]="1">
+            <div class="cc-ic"><i class="fas fa-envelope"></i></div>
+            <strong>Email</strong><span>{{ info.email||'consulta@devesan.com' }}</span>
           </a>
           <div class="cc rv" [style.--i]="2">
-            <div class="cc-icon"><i class="fas fa-map-marker-alt"></i></div>
-            <strong>Dirección</strong>
-            <span>{{ info.address || 'Crevillent, Alicante' }}</span>
+            <div class="cc-ic"><i class="fas fa-map-marker-alt"></i></div>
+            <strong>Dirección</strong><span>{{ info.address||'Crevillent, Alicante' }}</span>
           </div>
           <a [href]="waLink()" target="_blank" class="cc cc-wa rv" [style.--i]="3" *ngIf="info.whatsapp">
-            <div class="cc-icon cc-icon-wa"><i class="fab fa-whatsapp"></i></div>
-            <strong>WhatsApp</strong>
-            <span>{{ info.whatsapp }}</span>
+            <div class="cc-ic cc-wa-ic"><i class="fab fa-whatsapp"></i></div>
+            <strong>WhatsApp</strong><span>{{ info.whatsapp }}</span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ══ HORARIOS ══ -->
-    <section id="horarios" class="section section-cream">
-      <div class="wrap">
-        <header class="sec-head rv">
-          <span class="label">Disponibilidad</span>
+    <!-- HORARIOS -->
+    <section id="horarios" class="sec sec-tinted">
+      <div class="w">
+        <div class="sec-head rv">
+          <p class="overline">Disponibilidad</p>
           <h2>Horarios</h2>
-        </header>
-        <div class="hours-grid">
-          <div class="hcard rv" [style.--i]="0">
+        </div>
+        <div class="hr-grid">
+          <div class="hc rv" [style.--i]="0">
             <i class="fas fa-sun"></i>
             <h4>Lunes – Viernes</h4>
-            <div class="htime">{{ info.hours_lv || '9:00 – 18:00' }}</div>
+            <div class="htime">{{ info.hours_lv||'9:00 – 18:00' }}</div>
             <p>Presencial y online</p>
           </div>
-          <div class="hcard rv" [style.--i]="1">
+          <div class="hc rv" [style.--i]="1">
             <i class="fas fa-coffee"></i>
             <h4>Sábados</h4>
-            <div class="htime">{{ info.hours_sa || '9:00 – 14:00' }}</div>
+            <div class="htime">{{ info.hours_sa||'9:00 – 14:00' }}</div>
             <p>Solo presencial</p>
           </div>
-          <div class="hcard rv" [style.--i]="2">
+          <div class="hc rv" [style.--i]="2">
             <i class="fas fa-laptop"></i>
             <h4>Online</h4>
             <div class="htime">Flexible</div>
@@ -270,475 +215,398 @@ import { AuthService } from '../../services/auth.service';
     <app-chat-widget></app-chat-widget>
   `,
   styles: [`
-    /* ─── TOKENS ─── */
+    /* ── TOKENS ── */
     :host {
-      --sage:       #5a8a6a;
-      --sage-hi:    #7aaa88;
-      --sage-lo:    #3d6649;
-      --sage-pale:  #edf4ef;
-      --sage-soft:  #d6e9db;
-      --cream:      #faf8f4;
-      --cream-mid:  #f3ede3;
-      --cream-dark: #e8e0d0;
-      --text:       #1a2420;
-      --text-mid:   #354039;
-      --muted:      #6b7d72;
-      --border:     #dde8e1;
-      --white:      #ffffff;
-      --r:          14px;
-      --shadow:     0 4px 24px rgba(90,138,106,.08);
-      --shadow-md:  0 8px 40px rgba(90,138,106,.14);
-      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      --lav:       #7c6fcd;
+      --lav-hi:    #9d93d8;
+      --lav-lo:    #5a4fb5;
+      --lav-pale:  #f3f1fb;
+      --lav-soft:  #e2dff6;
+      --lav-mid:   #c8c3ee;
+      --bg:        #ffffff;
+      --tint:      #faf9fe;
+      --text:      #111118;
+      --text-2:    #3a3a4a;
+      --muted:     #6e6e82;
+      --border:    #e8e6f4;
+      --r:         16px;
+      font-family: -apple-system, 'SF Pro Display', 'Space Grotesk', 'Inter', sans-serif;
       color: var(--text);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :host { display: block; }
+    .w { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-
-    /* ─── PROGRESS ─── */
-    .progress-bar {
-      position: fixed; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--sage), var(--sage-hi));
-      transform-origin: left; transform: scaleX(0);
-      z-index: 9999; pointer-events: none;
+    /* ── PROGRESS ── */
+    .pbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 2.5px;
+      background: linear-gradient(90deg, var(--lav), var(--lav-hi));
+      transform-origin: left; z-index: 9999; pointer-events: none;
     }
 
-    /* ─── SECTIONS ─── */
-    .section       { padding: 6rem 0; }
-    .section-light { background: var(--white); }
-    .section-cream { background: var(--cream); }
-    .section-sage  { background: var(--sage-pale); }
+    /* ── REVEAL ── */
+    .rv {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .72s cubic-bezier(.22,1,.36,1),
+                  transform .72s cubic-bezier(.22,1,.36,1);
+      transition-delay: calc(var(--i,0) * .09s);
+    }
+    .rv.in { opacity: 1; transform: none; }
+    .rv-l { opacity:0; transform:translateX(-42px);
+      transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .rv-r { opacity:0; transform:translateX(42px);
+      transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .rv-l.in, .rv-r.in { opacity:1; transform:none; }
 
-    /* ─── TYPOGRAPHY ─── */
-    .label {
-      display: inline-block; font-size: .7rem; font-weight: 700;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--sage); margin-bottom: .7rem;
-    }
-    .label-light {
-      display: inline-block; font-size: .7rem; font-weight: 700;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(255,255,255,.7); margin-bottom: .7rem;
-    }
-    .sec-head { margin-bottom: 3rem; }
+    .fd { opacity:0; transform:translateY(20px); animation: afd .75s cubic-bezier(.22,1,.36,1) forwards; }
+    .d1{animation-delay:.08s} .d2{animation-delay:.22s} .d3{animation-delay:.38s}
+    .d4{animation-delay:.52s} .d5{animation-delay:.66s}
+    @keyframes afd { to { opacity:1; transform:none; } }
+
+    /* ── SECTIONS ── */
+    .sec { padding: 7rem 0; background: var(--bg); }
+    .sec-tinted { background: var(--tint); }
+
+    .sec-head { margin-bottom: 3.5rem; }
     .sec-head h2 {
-      font-size: clamp(2rem, 4.5vw, 3.8rem); font-weight: 700;
-      line-height: 1.1; letter-spacing: -.025em; color: var(--text);
-      margin-bottom: .7rem;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 700; letter-spacing: -.03em;
+      line-height: 1.1; color: var(--text); margin: .4rem 0 .8rem;
     }
-    .sec-head p { color: var(--muted); font-size: 1.05rem; max-width: 44ch; line-height: 1.7; }
+    .sec-head .sub { color: var(--muted); font-size: 1.05rem; max-width: 46ch; line-height: 1.7; }
 
-    /* ─── BUTTONS ─── */
+    .overline {
+      font-size: .7rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--lav); display: block; margin-bottom: .5rem;
+    }
+    .overline-light {
+      font-size: .7rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: rgba(255,255,255,.65); display: block; margin-bottom: .5rem;
+    }
+
+    /* ── BUTTONS ── */
     .btn-primary {
-      display: inline-block; padding: 14px 32px;
-      background: var(--sage); color: #fff;
-      border-radius: 50px; font-weight: 700; font-size: .95rem;
+      display: inline-flex; align-items: center;
+      padding: 14px 30px; background: var(--lav); color: #fff;
+      border-radius: 980px; font-weight: 600; font-size: .95rem;
       text-decoration: none;
-      box-shadow: 0 6px 24px rgba(90,138,106,.3);
+      box-shadow: 0 4px 20px rgba(124,111,205,.35);
       transition: background .2s, transform .2s, box-shadow .2s;
     }
-    .btn-primary:hover {
-      background: var(--sage-lo); transform: translateY(-2px);
-      box-shadow: 0 10px 32px rgba(90,138,106,.38);
-    }
-    .btn-secondary {
-      display: inline-block; padding: 14px 26px;
-      border: 1.5px solid var(--border); color: var(--text-mid);
-      border-radius: 50px; font-weight: 600; font-size: .95rem;
+    .btn-primary:hover { background: var(--lav-lo); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(124,111,205,.45); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center;
+      padding: 14px 26px; border: 1.5px solid var(--border); color: var(--text-2);
+      border-radius: 980px; font-weight: 600; font-size: .95rem;
       text-decoration: none; cursor: pointer;
       transition: border-color .2s, color .2s, background .2s;
     }
-    .btn-secondary:hover { border-color: var(--sage); color: var(--sage); background: var(--sage-pale); }
+    .btn-ghost:hover { border-color: var(--lav-mid); color: var(--lav); background: var(--lav-pale); }
 
     .btn-white {
-      display: inline-block; padding: 16px 38px;
-      background: #fff; color: var(--sage-lo);
-      border-radius: 50px; font-weight: 800; font-size: 1rem;
-      text-decoration: none;
-      box-shadow: 0 6px 28px rgba(0,0,0,.12);
+      display: inline-flex; padding: 14px 30px;
+      background: #fff; color: var(--lav-lo);
+      border-radius: 980px; font-weight: 700; font-size: .95rem;
+      text-decoration: none; box-shadow: 0 4px 20px rgba(0,0,0,.12);
       transition: transform .2s, box-shadow .2s;
     }
-    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,.18); }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.18); }
 
-    .btn-white-ghost {
-      display: inline-block; padding: 16px 30px;
+    .btn-white-o {
+      display: inline-flex; padding: 14px 26px;
       border: 1.5px solid rgba(255,255,255,.4); color: #fff;
-      border-radius: 50px; font-weight: 600; font-size: 1rem;
+      border-radius: 980px; font-weight: 600; font-size: .95rem;
       text-decoration: none; transition: border-color .2s, background .2s;
     }
-    .btn-white-ghost:hover { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.08); }
+    .btn-white-o:hover { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.1); }
 
-    /* ─── REVEAL ─── */
-    .rv {
-      opacity: 0; transform: translateY(36px);
-      transition: opacity .7s cubic-bezier(.22,1,.36,1),
-                  transform .7s cubic-bezier(.22,1,.36,1);
-      transition-delay: calc(var(--i,0) * .1s);
-    }
-    .rv.in { opacity: 1; transform: none; }
-    .rv-left { opacity: 0; transform: translateX(-48px);
-      transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
-    .rv-left.in { opacity: 1; transform: none; }
-    .rv-right { opacity: 0; transform: translateX(48px);
-      transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
-    .rv-right.in { opacity: 1; transform: none; }
-
-    /* Hero fade-in */
-    .fd { opacity: 0; transform: translateY(24px);
-      animation: afd .75s cubic-bezier(.22,1,.36,1) forwards; }
-    .d1{animation-delay:.05s} .d2{animation-delay:.2s}
-    .d3{animation-delay:.38s} .d4{animation-delay:.54s}
-    .d5{animation-delay:.7s}
-    @keyframes afd { to { opacity:1; transform:none; } }
-
-    /* ─── HERO ─── */
+    /* ── HERO ── */
     .hero {
-      min-height: 100vh; background: var(--cream);
-      position: relative; overflow: hidden;
+      min-height: 100svh; background: var(--bg);
       display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
     }
 
-    /* Background blobs */
-    .hero-blob {
-      position: absolute; border-radius: 50%; pointer-events: none; filter: blur(90px);
+    .hero-glow {
+      position: absolute; border-radius: 50%; pointer-events: none; filter: blur(100px);
     }
-    .hero-blob-1 {
-      width: 600px; height: 600px; top: -120px; right: -100px;
-      background: radial-gradient(circle, rgba(90,138,106,.14) 0%, transparent 70%);
-      animation: blob-move 20s ease-in-out infinite alternate;
+    .g1 {
+      width: 700px; height: 700px; top: -200px; right: -200px;
+      background: radial-gradient(circle, rgba(200,195,238,.5) 0%, transparent 65%);
+      animation: gfloat 22s ease-in-out infinite alternate;
     }
-    .hero-blob-2 {
-      width: 400px; height: 400px; bottom: -60px; left: -80px;
-      background: radial-gradient(circle, rgba(214,233,219,.6) 0%, transparent 70%);
-      animation: blob-move 26s ease-in-out infinite alternate-reverse;
+    .g2 {
+      width: 500px; height: 500px; bottom: -100px; left: -100px;
+      background: radial-gradient(circle, rgba(230,228,250,.5) 0%, transparent 65%);
+      animation: gfloat 28s ease-in-out infinite alternate-reverse;
     }
-    @keyframes blob-move {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(20px,-30px) scale(1.06); }
+    @keyframes gfloat { from{transform:translate(0,0)} to{transform:translate(24px,-32px)} }
+
+    .hero-inner {
+      max-width: 760px; margin: 0 auto;
+      padding: 6rem 1.5rem 4rem;
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: flex-start;
     }
 
-    .hero-content {
-      max-width: 1100px; margin: 0 auto; padding: 6rem 1.5rem 4rem;
-      display: grid; grid-template-columns: 1.1fr 0.9fr;
-      align-items: center; gap: 4rem; position: relative; z-index: 1;
+    .hero-tag {
+      font-size: .75rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 1.8rem;
     }
-
-    /* Hero left */
-    .hero-eyebrow {
-      display: flex; align-items: center; gap: .8rem;
-      margin-bottom: 1.8rem; flex-wrap: wrap;
-    }
-    .chip {
-      background: var(--sage-pale); color: var(--sage-lo);
-      border: 1px solid var(--sage-soft); border-radius: 24px;
-      font-size: .75rem; font-weight: 700; letter-spacing: .06em;
-      padding: 5px 14px;
-    }
-    .dot-sep {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--cream-dark); flex-shrink: 0;
-    }
-    .eyebrow-text { font-size: .8rem; color: var(--muted); font-weight: 500; }
 
     .hero-h {
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 700; line-height: 1.05; letter-spacing: -.035em;
-      color: var(--text); margin-bottom: 1.5rem;
+      font-size: clamp(3rem, 7.5vw, 7rem);
+      font-weight: 700; line-height: 1.02;
+      letter-spacing: -.04em; color: var(--text);
+      margin-bottom: 1.5rem;
     }
-    .hero-em {
-      color: var(--sage); display: inline-block;
-      position: relative;
-    }
-    .hero-em::after {
-      content: ''; position: absolute; left: 0; bottom: -4px; right: 0;
-      height: 3px; border-radius: 2px;
-      background: linear-gradient(90deg, var(--sage), var(--sage-hi));
-      opacity: .5;
+    .accent {
+      background: linear-gradient(135deg, var(--lav-lo), var(--lav-hi));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
 
-    .hero-sub {
-      font-size: 1.05rem; color: var(--muted); line-height: 1.75;
-      max-width: 40ch; margin-bottom: 2.4rem;
+    .hero-p {
+      font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--muted);
+      line-height: 1.75; max-width: 52ch; margin-bottom: 2.4rem;
     }
 
-    .hero-btns { display: flex; gap: .9rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
+    .hero-ctas { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 3rem; }
 
-    .hero-trust { display: flex; gap: 1.6rem; flex-wrap: wrap; }
-    .trust-item {
-      display: flex; align-items: center; gap: .45rem;
-      font-size: .8rem; color: var(--muted); font-weight: 500;
+    /* Avatar profile row */
+    .hero-profile {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
     }
-    .trust-item i { color: var(--sage); font-size: .85rem; }
+    .avatar-ring {
+      width: 56px; height: 56px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 2.5px solid var(--lav-soft);
+      box-shadow: 0 4px 16px rgba(124,111,205,.2);
+    }
+    .avatar-ring img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
-    /* Hero right — photo */
-    .hero-right { display: flex; justify-content: center; align-items: center; }
-    .photo-wrap { position: relative; width: 340px; }
-    .photo-wrap img {
-      width: 100%; aspect-ratio: 3/4;
-      object-fit: cover; object-position: top center;
-      border-radius: 24px 24px 120px 24px;
-      box-shadow: 0 20px 60px rgba(90,138,106,.2), 0 4px 16px rgba(0,0,0,.06);
-      display: block;
-    }
-    .photo-card {
-      position: absolute; background: #fff;
-      border-radius: 14px; padding: 10px 16px;
-      display: flex; align-items: center; gap: .65rem;
-      box-shadow: 0 8px 28px rgba(0,0,0,.1);
-      font-size: .82rem;
-    }
-    .photo-card i { color: var(--sage); font-size: 1rem; }
-    .photo-card strong { display: block; font-weight: 800; color: var(--text); font-size: .85rem; }
-    .photo-card span  { color: var(--muted); font-size: .74rem; }
-    .photo-card-top { top: 1.5rem; left: -2rem; }
-    .photo-card-bot { bottom: 1.8rem; right: -2rem; }
+    .profile-text { display: flex; flex-direction: column; gap: .1rem; }
+    .profile-text strong { font-size: .9rem; font-weight: 700; color: var(--text); }
+    .profile-text span   { font-size: .78rem; color: var(--muted); }
 
-    /* Scroll cue */
-    .hero-scroll {
-      position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
+    .profile-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--lav-pale); border: 1px solid var(--lav-soft);
+      color: var(--lav-lo); border-radius: 980px;
+      font-size: .75rem; font-weight: 600; padding: 5px 14px;
+    }
+    .profile-pill i { font-size: .75rem; }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
       display: flex; flex-direction: column; align-items: center; gap: .4rem;
-      color: var(--muted); font-size: .68rem; letter-spacing: .14em;
-      text-transform: uppercase; z-index: 1; font-weight: 600;
+      color: var(--muted); font-size: .65rem; letter-spacing: .14em; text-transform: uppercase;
+      z-index: 1; font-weight: 600;
     }
-    .scroll-track {
-      width: 20px; height: 32px; border: 1.5px solid var(--cream-dark);
-      border-radius: 10px; display: flex; justify-content: center; padding: 4px 0;
+    .sh-mouse {
+      width: 22px; height: 34px; border: 1.5px solid var(--border);
+      border-radius: 11px; display: flex; justify-content: center; align-items: flex-start; padding: 5px 0;
     }
-    .scroll-dot {
-      width: 4px; height: 8px; background: var(--sage);
-      border-radius: 2px; animation: scroll-bounce 1.8s ease-in-out infinite;
+    .sh-wheel {
+      width: 3px; height: 8px; background: var(--lav-hi); border-radius: 2px;
+      animation: shw 2s ease-in-out infinite;
     }
-    @keyframes scroll-bounce {
-      0%,100% { transform:translateY(0); opacity:1; }
-      50%      { transform:translateY(10px); opacity:.3; }
-    }
+    @keyframes shw { 0%,100%{transform:translateY(0);opacity:1} 50%{transform:translateY(9px);opacity:.25} }
 
-    /* ─── MARQUEE ─── */
-    .marquee-strip {
-      background: var(--sage); padding: .9rem 0; overflow: hidden;
-    }
-    .marquee-inner {
-      display: flex; white-space: nowrap;
-      animation: mq 32s linear infinite;
-    }
-    .marquee-inner span {
-      display: inline-flex; align-items: center; gap: .9rem;
-      font-size: .72rem; font-weight: 600; letter-spacing: .16em;
-      text-transform: uppercase; color: rgba(255,255,255,.7);
-      padding-right: .9rem;
-    }
-    .marquee-inner em { color: rgba(255,255,255,.3); font-style: normal; font-size: .5rem; }
-    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    /* ─── SERVICIOS ─── */
+    /* ── SERVICIOS ── */
     .svc-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.4rem;
+      gap: 1.2rem;
     }
-    .svc-card {
-      background: var(--cream); border: 1.5px solid var(--border);
+    .svc {
+      background: var(--tint); border: 1px solid var(--border);
       border-radius: var(--r); padding: 2rem 1.8rem;
       display: flex; flex-direction: column; gap: .7rem;
       transition: transform .22s, box-shadow .22s, border-color .22s;
       transition-delay: calc(var(--i,0) * .06s);
     }
-    .svc-card:hover {
-      transform: translateY(-5px); box-shadow: var(--shadow-md);
-      border-color: var(--sage-soft);
+    .svc:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(124,111,205,.12);
+      border-color: var(--lav-mid);
     }
-    .svc-icon {
-      width: 50px; height: 50px; border-radius: 14px;
-      background: var(--sage-pale); color: var(--sage);
+    .svc-ico {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--lav-pale); color: var(--lav);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem;
-      border: 1px solid var(--sage-soft);
+      font-size: 1.2rem; border: 1px solid var(--lav-soft);
     }
-    .svc-card h3 { font-size: 1.08rem; font-weight: 700; color: var(--text); }
-    .svc-card p  { color: var(--muted); font-size: .87rem; line-height: 1.65; flex: 1; }
-    .svc-bottom  { display: flex; align-items: center; justify-content: space-between; padding-top: .4rem; border-top: 1px solid var(--border); }
-    .svc-price   { font-size: .85rem; font-weight: 700; color: var(--sage); }
-    .svc-cta     { font-size: .83rem; font-weight: 700; color: var(--text-mid); text-decoration: none; transition: color .15s; }
-    .svc-cta:hover { color: var(--sage); }
+    .svc h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .svc p  { font-size: .87rem; color: var(--muted); line-height: 1.65; flex: 1; }
+    .svc-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .6rem; border-top: 1px solid var(--border);
+    }
+    .price  { font-size: .85rem; font-weight: 700; color: var(--lav); }
+    .svc-link { font-size: .83rem; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .15s; }
+    .svc-link:hover { color: var(--lav); }
 
-    /* ─── SOBRE MÍ ─── */
-    .about-wrap {
-      display: grid; grid-template-columns: 0.85fr 1.15fr;
-      align-items: center; gap: 5rem;
+    /* ── SOBRE MÍ ── */
+    .about-w {
+      display: grid; grid-template-columns: 0.7fr 1.3fr;
+      gap: 5rem; align-items: center;
     }
+    .about-img { display: flex; justify-content: center; }
+    .about-avatar {
+      width: 260px; height: 260px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 4px solid var(--lav-soft);
+      box-shadow: 0 16px 48px rgba(124,111,205,.2);
+    }
+    .about-avatar img { width:100%; height:100%; object-fit:cover; object-position:top center; }
 
-    .about-photo-col { position: relative; }
-    .about-photo-frame {
-      width: 100%; aspect-ratio: 4/5; overflow: hidden;
-      border-radius: 24px 120px 24px 24px;
-      box-shadow: var(--shadow-md);
-    }
-    .about-photo-frame img {
-      width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;
-    }
-    .about-decor {
-      position: absolute; width: 140px; height: 140px;
-      bottom: -24px; left: -24px; border-radius: 50%;
-      border: 3px solid var(--sage-soft); z-index: -1;
-    }
-
-    .about-name {
+    .about-txt h2 {
       font-size: clamp(1.8rem, 3.5vw, 3rem);
-      font-weight: 700; line-height: 1.1; letter-spacing: -.025em;
-      color: var(--text); margin: .4rem 0 .5rem;
+      font-weight: 700; letter-spacing: -.025em; line-height: 1.1;
+      color: var(--text); margin: .4rem 0 .3rem;
     }
-    .about-role { color: var(--sage); font-weight: 600; font-size: .9rem; margin-bottom: 1.2rem; }
-    .about-bio  { color: var(--muted); line-height: 1.75; font-size: .97rem; margin-bottom: .8rem; }
+    .about-role { color: var(--lav); font-weight: 600; font-size: .9rem; margin-bottom: 1.2rem; }
+    .body-txt   { color: var(--muted); line-height: 1.75; font-size: .97rem; margin-bottom: .8rem; }
 
-    .about-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
-    .about-tags span {
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
+    .tags span {
       font-size: .75rem; font-weight: 600;
-      background: var(--white); border: 1px solid var(--border);
-      color: var(--text-mid); padding: 5px 14px; border-radius: 24px;
-      transition: border-color .18s, color .18s;
+      background: var(--lav-pale); border: 1px solid var(--lav-soft);
+      color: var(--lav-lo); padding: 5px 14px; border-radius: 980px;
     }
-    .about-tags span:hover { border-color: var(--sage-soft); color: var(--sage); }
 
-    /* ─── PROCESO ─── */
-    .steps-grid {
+    /* ── PROCESO ── */
+    .steps {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-      gap: 1.4rem;
+      gap: 1.2rem;
     }
     .step {
-      background: var(--cream); border: 1.5px solid var(--border);
+      background: var(--tint); border: 1px solid var(--border);
       border-radius: var(--r); padding: 2.2rem 1.7rem; position: relative;
       transition: transform .22s, box-shadow .22s;
       transition-delay: calc(var(--i,0) * .08s);
     }
-    .step:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-    .step-num {
+    .step:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(124,111,205,.1); }
+    .step-n {
       position: absolute; top: 1.4rem; right: 1.4rem;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--sage); color: #fff;
-      font-weight: 800; font-size: .8rem;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--lav); color: #fff;
+      font-weight: 700; font-size: .78rem;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 12px rgba(90,138,106,.3);
     }
-    .step-icon {
-      width: 50px; height: 50px; border-radius: 14px;
-      background: var(--sage-pale); color: var(--sage);
+    .step-ico {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--lav-pale); color: var(--lav);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; margin-bottom: 1.1rem;
-      border: 1px solid var(--sage-soft);
+      font-size: 1.2rem; border: 1px solid var(--lav-soft); margin-bottom: 1.1rem;
     }
-    .step h4 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: .45rem; }
-    .step p  { font-size: .86rem; color: var(--muted); line-height: 1.65; }
+    .step h4 { font-size: .97rem; font-weight: 700; color: var(--text); margin-bottom: .45rem; }
+    .step p  { font-size: .85rem; color: var(--muted); line-height: 1.65; }
 
-    /* ─── TESTIMONIOS ─── */
+    /* ── TESTIMONIOS ── */
     .testi-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
-      gap: 1.4rem;
+      gap: 1.2rem;
     }
-    .testi-card {
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: var(--r); padding: 2rem 1.8rem;
-      transition: transform .22s, box-shadow .22s, border-color .22s;
+    .tcard {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2.2rem 2rem;
+      transition: transform .22s, box-shadow .22s;
       transition-delay: calc(var(--i,0) * .09s);
     }
-    .testi-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--sage-soft); }
-    .testi-mark { font-size: 4rem; line-height: .8; color: var(--sage-soft); font-family: Georgia, serif; margin-bottom: .3rem; }
-    .testi-card p { color: var(--text-mid); font-size: .95rem; line-height: 1.72; margin-bottom: 1.3rem; font-style: italic; }
-    .testi-stars { color: #f59e0b; display: flex; gap: .12rem; font-size: .8rem; margin-bottom: 1.2rem; }
-    .testi-author { display: flex; align-items: center; gap: .75rem; }
-    .testi-avatar {
+    .tcard:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(124,111,205,.1); }
+    .tcard-q { font-size: 3.5rem; line-height: .8; color: var(--lav-soft); font-family: Georgia,serif; margin-bottom: .3rem; }
+    .tcard p  { color: var(--text-2); font-size: .95rem; line-height: 1.72; margin-bottom: 1.3rem; font-style: italic; }
+    .stars    { color: #f59e0b; font-size: .8rem; display: flex; gap: .1rem; margin-bottom: 1.1rem; }
+    .tcard-who { display: flex; align-items: center; gap: .75rem; }
+    .tcard-av {
       width: 40px; height: 40px; border-radius: 50%;
-      background: var(--sage-pale); color: var(--sage-lo);
-      font-weight: 800; font-size: .95rem;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; border: 1.5px solid var(--sage-soft);
+      background: var(--lav-pale); border: 1.5px solid var(--lav-soft);
+      color: var(--lav-lo); font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .testi-author strong { display: block; font-size: .88rem; color: var(--text); font-weight: 700; }
-    .testi-author small  { font-size: .76rem; color: var(--muted); }
+    .tcard-who strong { display:block; font-size:.88rem; font-weight:700; color:var(--text); }
+    .tcard-who small  { font-size:.76rem; color:var(--muted); }
 
-    /* ─── CTA ─── */
-    .section-cta {
-      background: linear-gradient(135deg, var(--sage-lo) 0%, var(--sage) 60%, var(--sage-hi) 100%);
-      padding: 5.5rem 0; position: relative; overflow: hidden;
+    /* ── CTA ── */
+    .cta-sec {
+      background: linear-gradient(135deg, var(--lav-lo) 0%, var(--lav) 50%, var(--lav-hi) 100%);
+      padding: 6rem 0;
     }
-    .cta-blob {
-      position: absolute; border-radius: 50%; pointer-events: none; filter: blur(70px);
-    }
-    .cta-blob-1 { width:400px;height:400px;top:-120px;right:-80px;background:rgba(255,255,255,.08); }
-    .cta-blob-2 { width:300px;height:300px;bottom:-80px;left:-60px;background:rgba(0,0,0,.06); }
-    .cta-wrap {
+    .cta-w {
       display: grid; grid-template-columns: 1fr auto;
-      align-items: center; gap: 3rem; position: relative; z-index: 1;
+      align-items: center; gap: 3rem;
     }
-    .cta-left h2 {
-      font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700;
-      color: #fff; line-height: 1.1; letter-spacing: -.025em; margin: .4rem 0 .7rem;
+    .cta-w h2 {
+      font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 700;
+      color: #fff; letter-spacing: -.03em; line-height: 1.05; margin: .4rem 0 .7rem;
     }
-    .cta-left p { color: rgba(255,255,255,.72); font-size: 1rem; }
-    .cta-right { display: flex; flex-direction: column; gap: .8rem; align-items: flex-end; }
+    .cta-w p { color: rgba(255,255,255,.7); font-size: 1rem; }
+    .cta-btns { display: flex; flex-direction: column; gap: .8rem; align-items: flex-end; }
 
-    /* ─── CONTACTO ─── */
-    .contact-grid {
+    /* ── CONTACTO ── */
+    .cc-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.2rem;
     }
     .cc {
-      background: var(--cream); border: 1.5px solid var(--border);
-      border-radius: var(--r); padding: 1.8rem 1.5rem;
+      background: var(--tint); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 1.8rem 1.5rem;
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5rem;
       text-decoration: none;
       transition: transform .22s, box-shadow .22s, border-color .22s;
       transition-delay: calc(var(--i,0) * .07s);
     }
-    .cc:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--sage-soft); }
-    .cc-icon {
-      width: 50px; height: 50px; border-radius: 14px;
-      background: var(--sage-pale); color: var(--sage);
+    .cc:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(124,111,205,.1); border-color: var(--lav-mid); }
+    .cc-ic {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--lav-pale); color: var(--lav);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; border: 1px solid var(--sage-soft); margin-bottom: .2rem;
+      font-size: 1.2rem; border: 1px solid var(--lav-soft); margin-bottom: .2rem;
     }
-    .cc-icon-wa { background: rgba(34,197,94,.1); color: #16a34a; border-color: rgba(34,197,94,.2); }
-    .cc strong { font-size: .9rem; font-weight: 700; color: var(--text); }
-    .cc span   { font-size: .85rem; color: var(--muted); }
+    .cc-wa-ic { background: rgba(34,197,94,.1); color: #16a34a; border-color: rgba(34,197,94,.25); }
+    .cc strong { font-size: .88rem; font-weight: 700; color: var(--text); }
+    .cc span   { font-size: .83rem; color: var(--muted); }
 
-    /* ─── HORARIOS ─── */
-    .hours-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.4rem;
+    /* ── HORARIOS ── */
+    .hr-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.2rem;
     }
-    .hcard {
-      background: var(--white); border: 1.5px solid var(--border);
+    .hc {
+      background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--r); padding: 2.5rem 1.5rem; text-align: center;
       transition: transform .22s, box-shadow .22s;
       transition-delay: calc(var(--i,0) * .08s);
     }
-    .hcard:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-    .hcard > i { font-size: 1.8rem; color: var(--sage); margin-bottom: .8rem; display: block; }
-    .hcard h4   { font-weight: 700; color: var(--text); margin-bottom: .4rem; }
-    .htime { font-size: 1.5rem; font-weight: 700; color: var(--sage); margin-bottom: .4rem; }
-    .hcard p { color: var(--muted); font-size: .85rem; }
+    .hc:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(124,111,205,.1); }
+    .hc > i { font-size: 1.8rem; color: var(--lav); margin-bottom: .8rem; display: block; }
+    .hc h4   { font-weight: 700; color: var(--text); margin-bottom: .4rem; font-size: .95rem; }
+    .htime   { font-size: 1.5rem; font-weight: 700; color: var(--lav); margin-bottom: .35rem; }
+    .hc p    { color: var(--muted); font-size: .84rem; }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 960px) {
-      .hero-content { grid-template-columns: 1fr; gap: 2.5rem; padding: 5rem 1.5rem 3rem; }
-      .hero-right { order: -1; }
-      .photo-wrap { width: 260px; }
-      .photo-card-top { left: -1rem; }
-      .photo-card-bot { right: -1rem; }
-      .hero-sub { max-width: 100%; }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner  { align-items: center; text-align: center; }
+      .hero-tag    { text-align: center; }
+      .hero-p      { max-width: 100%; }
+      .hero-ctas   { justify-content: center; }
+      .hero-profile { justify-content: center; }
 
-      .about-wrap { grid-template-columns: 1fr; gap: 3rem; }
-      .about-photo-frame { aspect-ratio: 16/9; border-radius: 20px; max-height: 320px; }
-      .about-photo-frame img { object-position: center 15%; }
-      .about-decor { display: none; }
+      .about-w { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-img { justify-content: center; }
+      .about-avatar { width: 180px; height: 180px; }
+      .about-txt { text-align: center; }
+      .about-txt .tags { justify-content: center; }
 
-      .cta-wrap { grid-template-columns: 1fr; text-align: center; }
-      .cta-right { align-items: center; }
+      .cta-w { grid-template-columns: 1fr; text-align: center; }
+      .cta-btns { align-items: center; }
     }
 
     @media (max-width: 600px) {
-      .section { padding: 4rem 0; }
-      .hero-btns { flex-direction: column; align-items: flex-start; }
-      .hero-trust { gap: 1rem; }
-      .photo-wrap { width: 220px; }
+      .sec  { padding: 4.5rem 0; }
+      .hero-h { font-size: clamp(2.6rem, 11vw, 4.5rem); }
+      .hero-ctas { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-ghost { justify-content: center; }
     }
   `]
 })
@@ -749,21 +617,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ctaLabel  = 'Reservar cita';
   pct       = 0;
 
-  trust = [
-    { icon: 'fas fa-lock',        label: '100% Confidencial'   },
-    { icon: 'fas fa-laptop',      label: 'Online y presencial' },
-    { icon: 'fas fa-map-marker-alt', label: 'Crevillent'       },
-  ];
-
-  mqItems = [
-    'Psicología', 'Sexología', 'Terapia de Pareja',
-    'Orientación Laboral', 'Crevillent', 'Online',
-    'Confidencial', '1ª Consulta Gratis',
-  ];
+  tags = ['Cognitivo-conductual', 'Terapia sistémica', 'Sexología clínica', 'Mindfulness'];
 
   services = [
     { icon: 'fas fa-brain',      title: 'Terapia individual',  price: '60 €/sesión', desc: 'Ansiedad, depresión, autoestima, duelo y gestión emocional.' },
-    { icon: 'fas fa-heart',      title: 'Terapia de pareja',   price: '70 €/sesión', desc: 'Comunicación, crisis relacionales y duelos de pareja.' },
+    { icon: 'fas fa-heart',      title: 'Terapia de pareja',   price: '70 €/sesión', desc: 'Comunicación, crisis de pareja, duelos y reconciliación.' },
     { icon: 'fas fa-venus-mars', title: 'Sexología',           price: '60 €/sesión', desc: 'Disfunciones sexuales, educación y salud sexual.' },
     { icon: 'fas fa-briefcase',  title: 'Orientación laboral', price: '50 €/sesión', desc: 'CV, portfolio, entrevistas y videocurriculums.' },
     { icon: 'fas fa-users',      title: 'Talleres y grupos',   price: 'Consultar',   desc: 'Duelo, autoestima, biodanza y habilidades sociales.' },
@@ -771,9 +629,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   steps = [
-    { icon: 'fas fa-phone-alt',      title: 'Contáctame',          desc: 'Llama, escribe por WhatsApp o rellena el formulario online.' },
+    { icon: 'fas fa-phone-alt',      title: 'Contáctame',          desc: 'Llama, escribe por WhatsApp o rellena el formulario.' },
     { icon: 'fas fa-calendar-check', title: 'Primera consulta',    desc: 'Una sesión gratuita para conocernos sin compromiso.' },
-    { icon: 'fas fa-clipboard-list', title: 'Plan personalizado',  desc: 'Diseñamos juntos un plan adaptado a tus objetivos.' },
+    { icon: 'fas fa-clipboard-list', title: 'Plan personalizado',  desc: 'Diseñamos juntos un plan terapéutico a tu medida.' },
     { icon: 'fas fa-seedling',       title: 'Avanzas',             desc: 'Con sesiones regulares progresamos hacia tu bienestar.' },
   ];
 
@@ -783,46 +641,44 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'Laura G.',  service: 'Orientación laboral', text: 'Encontré trabajo en pocas semanas con su ayuda. El portfolio que diseñamos juntas fue clave.' },
   ];
 
-  aboutTags = ['Cognitivo-conductual', 'Terapia sistémica', 'Sexología clínica', 'Mindfulness'];
-
-  private revealObs!: IntersectionObserver;
-  private scrollTicking = false;
+  private obs!: IntersectionObserver;
+  private ticking = false;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.http.get<any>('/api/info').subscribe({
-      next: r => { (r.info || []).forEach((i: any) => { this.info[i.key] = i.value; }); },
+      next: r => { (r.info||[]).forEach((i:any) => { this.info[i.key] = i.value; }); },
       error: () => {}
     });
     this.auth.user$.subscribe(u => {
-      if (u?.role === 'patient') { this.ctaLink = '/mi-area'; this.ctaParams = { tab: 'reservar' }; this.ctaLabel = 'Reservar cita'; }
-      else if (u?.role === 'admin') { this.ctaLink = '/admin'; this.ctaParams = null; this.ctaLabel = 'Panel admin'; }
-      else { this.ctaLink = '/registro'; this.ctaParams = null; this.ctaLabel = 'Reservar cita'; }
+      if (u?.role === 'patient') { this.ctaLink='/mi-area'; this.ctaParams={tab:'reservar'}; this.ctaLabel='Reservar cita'; }
+      else if (u?.role === 'admin') { this.ctaLink='/admin'; this.ctaParams=null; this.ctaLabel='Panel admin'; }
+      else { this.ctaLink='/registro'; this.ctaParams=null; this.ctaLabel='Reservar cita'; }
     });
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.revealObs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); this.revealObs.unobserve(e.target); } });
+      this.obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); this.obs.unobserve(e.target); } });
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-      document.querySelectorAll('.rv,.rv-left,.rv-right').forEach(el => this.revealObs.observe(el));
+      document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el => this.obs.observe(el));
     }, 80);
   }
 
-  ngOnDestroy(): void { this.revealObs?.disconnect(); }
+  ngOnDestroy(): void { this.obs?.disconnect(); }
 
   @HostListener('window:scroll')
   onScroll(): void {
-    if (this.scrollTicking) return;
-    this.scrollTicking = true;
+    if (this.ticking) return;
+    this.ticking = true;
     requestAnimationFrame(() => {
       this.pct = Math.min(window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100, 100);
-      this.scrollTicking = false;
+      this.ticking = false;
     });
   }
 
-  waLink(): string { return this.info.whatsapp ? 'https://wa.me/' + this.info.whatsapp.replace(/\D/g,'') : '#'; }
-  scrollTo(id: string): void { setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 50); }
+  waLink() { return this.info.whatsapp ? 'https://wa.me/'+this.info.whatsapp.replace(/\D/g,'') : '#'; }
+  scrollTo(id: string) { setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior:'smooth' }), 50); }
 }
